@@ -86,11 +86,15 @@ app.get("/user", requiresAuth(), async (req, res) => {
 });
 
 app.get("/expenses", requiresAuth(), async (req, res, next) => {
-  const { data: expenses } = await axios.get(`${API_URL}/reports`);
-  res.render("expenses", {
-    user: req.oidc && req.oidc.user,
-    expenses,
-  });
+  try {
+    const { data: expenses } = await axios.get(`${API_URL}/reports`);
+    res.render("expenses", {
+      user: req.oidc && req.oidc.user,
+      expenses,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 // catch 404 and forward to error handler
