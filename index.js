@@ -48,6 +48,7 @@ app.use(
     authorizationParams: {
       response_type: "code id_token",
       audience: "https://expenses-api",
+      scope: "openid profile email read:reports"
     }
   })
 )
@@ -98,7 +99,7 @@ app.get("/expenses", requiresAuth(), async (req, res, next) => {
         Authorization: `${token_type} ${access_token}`
       }
     });
-    
+
     res.render("expenses", {
       user: req.oidc && req.oidc.user,
       expenses,
